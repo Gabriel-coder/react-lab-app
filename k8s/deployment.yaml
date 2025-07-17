@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-lab-app
+  labels:
+    app: react-lab-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: react-lab-app
+  template:
+    metadata:
+      labels:
+        app: react-lab-app
+    spec:
+      containers:
+        - name: react-lab-app
+          image: acrlabregistry01.azurecr.io/react-lab-app:v6
+          ports:
+            - containerPort: 80
