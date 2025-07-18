@@ -5,15 +5,15 @@ on:
     branches:
       - main
 
-permissions:
-  id-token: write
-  contents: read
-
 env:
   ACR_NAME: acrlabregistry
   RESOURCE_GROUP: rg-tfstate
   CLUSTER_NAME: aks-lab
   IMAGE_NAME: react-lab-app
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
@@ -23,13 +23,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Azure Login
+    - name: Azure Login with OIDC
       uses: azure/login@v1
       with:
-        client-id: ${{ secrets.ARM_CLIENT_ID }}
-        tenant-id: ${{ secrets.ARM_TENANT_ID }}
-        subscription-id: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-        auth-type: SERVICE_PRINCIPAL
+        client-id: b1ba8665-4227-4d0b-bcb1-ceb6f7d336cc
+        tenant-id: f6fa9643-70a9-454c-8d0b-3cfc7c492750
+        subscription-id: bb51bc68-387c-4f21-9046-8e1536a2d237
 
     - name: Build and Push Docker image to ACR
       run: |
@@ -44,4 +43,3 @@ jobs:
     - name: Deploy to AKS
       run: |
         kubectl apply -f k8s/
-
